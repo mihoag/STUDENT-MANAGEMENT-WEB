@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head th:replace="fragment :: html_file" />
+<body style="background-color: #f5f7f6;">
+
+   <div th:replace="fragment :: header"></div>
+
+    <div class="container-fluid w-100 m-0">
+        <div class="row w-100">
+            <div class="col-md-3">
+               <aside th:replace="fragment :: sidebar"></aside>
+                <!--end side bar-->
+            </div>
+            <div class="col-md-9">
+                <!--Body table student-->
+               <main class="main-content border-radius-lg">
+                    <div class="card mt-3">
+                        <div class="card-body px-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ID</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Tên học sinh</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Ngày sinh</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Địa chỉ</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr th:each="st : ${listStudent}">
+                                            <td>
+                                                <div class="d-flex px-4 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm" th:text="${st.id}"></h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" th:text="${st.name}"></p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" th:text="${st.birthday}"></p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" th:text="${st.address}">
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-bs-toggle="modal" th:attr="data-id=${st.id}"
+                                                    data-bs-target="#listCourse">
+                                                    Chi tiết lớp học tham gia
+                                                </a>
+
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                                 <nav aria-label="..." style="margin: 2% 0 0 1%;" th:if="${totalPages > 1}">
+                                    <ul class="pagination">
+                                        <li class="page-item disabled">
+                                            <span th:unless="${currentPage > 1}" class="page-link">Previous</span>
+                                        </li>
+                                        <li th:if="${currentPage > 1}"  class="page-item"><a class="page-link" th:href="@{'/student-course/page/' + ${currentPage - 1} + '?year=' + ${selectYear}}">Previous</a></li>
+                                        
+                                        <div th:each="i: ${#numbers.sequence(1, totalPages)}">
+			                            <li th:if="${currentPage != i}" class="page-item"><a th:href="@{'/student-course/page/' + ${i} + '?year=' + ${selectYear}}" class="page-link" href="#">[[${i}]]</a></li>
+                                        <li th:unless="${currentPage != i}" class="page-item active" aria-current="page">
+                                            <span class="page-link">[[${i}]]</span>
+                                        </li>
+		    
+                                        </div>
+                                        <li class="page-item disabled">
+                                            <span th:unless="${currentPage < totalPages}" class="page-link">Next</span>
+                                      
+                                        </li>
+                                        <li th:if="${currentPage < totalPages}"   class="page-item"><a class="page-link" th:href="@{'/student-course/page/' + ${currentPage + 1} + '?year=' + ${selectYear}}">Next</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="modal fade modal-lg" id="listCourse" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Danh sách lớp học tham gia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Tên khóa học</th>
+                                <th scope="col">Tên giảng viên</th>
+                                <th scope="col">Năm</th>
+                                <th scope="col">Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody id = "listCourses">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mạng máy tính</td>
+                                <td>Nguyễn Hà Minh</td>
+                                <td>2024</td>
+                                <td>
+                                    9.7
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      
+   
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+<script type="text/javascript">
+
+     var listCourses = document.getElementById('listCourses');
+     
+
+     function handleChange() {
+            var select = document.getElementById('selectYear');
+            var selectedValue = select.value;
+            console.log("Selected value:", selectedValue);
+            // You can perform further actions based on the selected value here
+            
+            window.location.href = `[[@{'/student-course/page/1?year=${selectedValue}'}]]`;
+        }
+        
+        
+         function getValue(element) {
+           // Get the value attribute of the <a> element
+           var id = element.getAttribute("id");
+           var point = document.getElementById(id).value;
+           //console.log(value);
+           
+           // check valid
+           if(!(point >=0 && point <= 10))
+           {
+              alert("Điểm không hợp lệ");
+              return;
+           }
+           
+           
+            $.ajax({
+            url: '/api/courses-student/' + id +'/point/'+ point,
+            type: 'PUT',
+            contentType: 'application/json',
+            success: function (result) {
+                alert("Cập nhật điểm sinh viên thành công");
+            },
+            error: function (error) {
+                alert("Cập nhật điểm sinh viên thất bại");
+            }
+        });
+           
+           
+        }
+        
+         // Show student not in class
+         function renderlistCourse(idStudent)
+         {
+             $.get(`/api/courses-from-student/${idStudent}`,  function (data) {
+        
+               var text = '';
+               for(let i =0; i < data.length; i++)
+               {
+                                text += `<tr>
+                                <th scope="row">${data[i].idCourse}</th>
+                                <td>${data[i].nameCourse}</td>
+                                <td>${data[i].lecture}</td>
+                                <td>${data[i].year}</td>
+                                <td>
+                                  <div style="display: flex; justify-content: center;">
+                                      <input type="number" id="${data[i].idCourseStudent}"  style="width: 80px;" value = "${data[i].point}" class="form-control" placeholder=" Nhập điểm"> &nbsp;
+                                      <a onclick="getValue(this)" id="${data[i].idCourseStudent}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                  </div>
+                                </td>
+                            </tr>`
+               }
+                console.log(text)
+               listCourses.innerHTML = text;   
+       
+        }).fail(function () {
+            alert("FAIL")
+        }
+        );
+        }
+        
+     // Show list students
+     $('#listCourse').on('show.bs.modal', async function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id')
+        renderlistCourse(id);
+    })
+    
+    $('#insertStudent').on('show.bs.modal', async function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id')
+        idCourseInsert = id;
+        renderlistStudentNotInCourse(id);
+    })
+    
+</script>
+</html>

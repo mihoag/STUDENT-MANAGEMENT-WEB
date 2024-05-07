@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.hcmus.web.CourseStudentTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.316 s -- in com.hcmus.web.CourseStudentTest
